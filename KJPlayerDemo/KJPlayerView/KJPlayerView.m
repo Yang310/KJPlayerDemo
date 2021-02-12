@@ -9,10 +9,28 @@
 #import "KJPlayerView.h"
 #import <MediaPlayer/MPVolumeView.h> 
 #import <QuartzCore/QuartzCore.h>
-#import "UIButton+KJPlayerAreaInsets.h"
 /// 设置图片
 #define PLAYER_GET_BUNDLE_IMAGE(imageName) \
 ([UIImage imageNamed:[@"KJPlayerView.bundle" stringByAppendingPathComponent:(imageName)]])
+@implementation UIButton (KJPlayerAreaInsets)
+- (UIEdgeInsets)touchAreaInsets{
+    return [objc_getAssociatedObject(self, @selector(touchAreaInsets)) UIEdgeInsetsValue];
+}
+- (void)setTouchAreaInsets:(UIEdgeInsets)touchAreaInsets{
+    NSValue *value = [NSValue valueWithUIEdgeInsets:touchAreaInsets];
+    objc_setAssociatedObject(self, @selector(touchAreaInsets), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
+    UIEdgeInsets touchAreaInsets = self.touchAreaInsets;
+    CGRect bounds = self.bounds;
+    bounds = CGRectMake(bounds.origin.x - touchAreaInsets.left,
+                        bounds.origin.y - touchAreaInsets.top,
+                        bounds.size.width + touchAreaInsets.left + touchAreaInsets.right,
+                        bounds.size.height + touchAreaInsets.top + touchAreaInsets.bottom);
+    return CGRectContainsPoint(bounds, point);
+}
+@end
+
 @interface KJPlayerView ()<KJOldPlayerDelegate,UIGestureRecognizerDelegate>
 @property (nonatomic,strong) id videoURL;
 @property (nonatomic,strong) NSTimer *timer;

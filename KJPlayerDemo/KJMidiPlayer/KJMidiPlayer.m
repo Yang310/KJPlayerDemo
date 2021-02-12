@@ -76,12 +76,15 @@ PLAYER_COMMON_PROPERTY
     DisposeAUGraph(graph);
     _musicPlayer = nil;
 }
-/* 设置开始播放时间 */
-- (void)kj_playerSeekTime:(NSTimeInterval)seconds completionHandler:(void(^_Nullable)(BOOL finished))completionHandler{
-    MusicTimeStamp time = seconds;
-    SInt32 xx = MusicPlayerSetTime(_musicPlayer, time);
-    if (completionHandler) completionHandler(xx>=0);
+/* 快进或快退 */
+- (void (^)(NSTimeInterval,void (^_Nullable)(BOOL)))kVideoAdvanceAndReverse{
+    return ^(NSTimeInterval seconds,void (^xxblock)(BOOL)){
+        MusicTimeStamp time = seconds;
+        SInt32 xx = MusicPlayerSetTime(self->_musicPlayer, time);
+        if (xxblock) xxblock(xx>=0);
+    };
 }
+
 #pragma mark - private method
 - (void)createGraph {
     if (_musicPlayer) [self kj_playerStop];

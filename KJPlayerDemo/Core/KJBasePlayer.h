@@ -20,8 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) UIView *playerView;
 /* 视频请求头 */
 @property (nonatomic,strong) NSDictionary *requestHeader;
-/* 是否使用缓存功能，默认no */
-@property (nonatomic,assign) BOOL useCacheFunction;
 /* 返回前台继续播放，默认no */
 @property (nonatomic,assign) BOOL roregroundResume;
 /* 进入后台暂停播放，默认no */
@@ -38,12 +36,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) BOOL muted;
 /* 缓存达到多少秒才能播放，默认5秒 */
 @property (nonatomic,assign) NSTimeInterval cacheTime;
-/* 指定时间播放（跳过片头）*/
-@property (nonatomic,assign) NSTimeInterval seekTime;
-/* 背景颜色，默认黑色 */
-@property (nonatomic,assign) CGColorRef background;
+/* 跳过片头（指定时间播放）*/
+@property (nonatomic,assign) NSTimeInterval skipHeadTime;
 /* 时间刻度，默认1秒 */
 @property (nonatomic,assign) NSTimeInterval timeSpace;
+/* 背景颜色，默认黑色 */
+@property (nonatomic,assign) CGColorRef background;
 /* 占位图 */
 @property (nonatomic,strong) UIImage *placeholder;
 /* 视频显示模式，默认KJPlayerVideoGravityResizeAspect */
@@ -53,27 +51,27 @@ NS_ASSUME_NONNULL_BEGIN
 /* 获取视频格式 */
 @property (nonatomic,copy,readwrite) void (^kVideoURLFromat)(KJPlayerVideoFromat fromat);
 /* 免费试看时间和试看结束回调，默认0不限制 */
-@property (nonatomic,copy,readonly) void (^kVideoTryLookTime)(void(^_Nullable lookEnd)(bool end), NSTimeInterval time);
+@property (nonatomic,copy,readonly) void (^kVideoTryLookTime)(void(^_Nullable lookEnd)(BOOL end), NSTimeInterval time);
 
 /* ************************* 分割线，上述属性需在videoURL之前设置 *****************************/
-/* 视频地址 */
+/* 视频地址，这个和下面的方法互斥，支持m3u8 */
 @property (nonatomic,strong) NSURL *videoURL;
+/* 使用边播边缓存，m3u8暂不支持 */
+@property (nonatomic,copy,readonly) BOOL (^kVideoCanCacheURL)(NSURL *videoURL, BOOL cache);
 
 /* ************************* 分割线，下面属性需在videoURL之后获取 *****************************/
-/* 是否为本地资源 */
-@property (nonatomic,assign,readonly) BOOL localityData;
+/* 播放失败 */
+@property (nonatomic,assign) KJPlayerErrorCode ecode;
 /* 是否正在播放 */
 @property (nonatomic,assign,readonly) BOOL isPlaying;
 /* 当前播放时间 */
 @property (nonatomic,assign,readonly) NSTimeInterval currentTime;
-/* 播放失败 */
-@property (nonatomic,assign,readonly) KJPlayerErrorCode errorCode;
 /* 获取视频尺寸大小 */
 @property (nonatomic,copy,readwrite) void (^kVideoSize)(CGSize size);
 /* 获取指定时间视频帧图片 */
-@property (nonatomic,copy,readonly) UIImage * (^kPlayerTimeImage)(NSTimeInterval time);
+@property (nonatomic,copy,readonly) UIImage * (^kVideoTimeImage)(NSTimeInterval time);
 /* 快进或快退 */
-@property (nonatomic,copy,readonly) void (^kVideoAdvanceAndReverse)(NSTimeInterval, void(^_Nullable)(bool finished));
+@property (nonatomic,copy,readonly) void (^kVideoAdvanceAndReverse)(NSTimeInterval, void(^_Nullable)(BOOL finished));
 
 /* 准备播放 */
 - (void)kj_playerPlay;

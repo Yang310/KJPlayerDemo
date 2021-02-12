@@ -12,6 +12,8 @@
 @property(nonatomic,strong)KJPlayer *player;
 @property(nonatomic,strong)UISlider *slider;
 @property(nonatomic,strong)UIProgressView *progressView;
+@property(nonatomic,assign)NSInteger index;
+@property(nonatomic,strong)NSArray *temps;
 @end
 
 @implementation KJAVPlayerVC
@@ -40,15 +42,16 @@
     backview.center = self.view.center;
     [self.view addSubview:backview];
     
+    self.temps = @[@"https://mp4.vjshi.com/2018-03-30/1f36dd9819eeef0bc508414494d34ad9.mp4",
+                   @"http://appit.winpow.com/attached/media/MP4/1567585643618.mp4",
+                   @"https://mp4.vjshi.com/2020-07-02/c411973c6c8628e94c40cb4e2689e56b.mp4"
+    ];
+    
     KJPlayer *player = [[KJPlayer alloc]init];
     self.player = player;
     player.playerView = backview;
     player.delegate = self;
-    player.useCacheFunction = YES;
     player.roregroundResume = YES;
-    player.speed = 1.25;
-    player.seekTime = 50;
-//    player.autoPlay = NO;
     player.kVideoTotalTime = ^(NSTimeInterval time) {
         slider.maximumValue = time;
         NSLog(@"time:%@",kPlayerConvertTime(time));
@@ -56,13 +59,8 @@
     player.kVideoURLFromat = ^(KJPlayerVideoFromat fromat) {
         NSLog(@"fromat:%@",KJPlayerVideoFromatStringMap[fromat]);
     };
-    player.kVideoTryLookTime(^(bool end) {
-        if (end) {
-            NSLog(@"试看时间已到");
-        }
-    }, 150);
-    player.videoURL = [NSURL URLWithString:@"https://mp4.vjshi.com/2018-03-30/1f36dd9819eeef0bc508414494d34ad9.mp4"];
-//    UIImage *image = KJPlayer.shared.kPlayerTimeImage(0);
+    player.videoURL = [NSURL URLWithString:self.temps[self.index]];
+//    UIImage *image = KJPlayer.shared.kVideoTimeImage(0);
     player.kVideoSize = ^(CGSize size) {
         NSLog(@"%.2f,%.2f",size.width,size.height);
     };
@@ -95,20 +93,30 @@
 - (void)kj_player:(id<KJBasePlayer>)player state:(KJPlayerState)state{
     NSLog(@"---当前播放器状态:%@",KJPlayerStateStringMap[state]);
     if (state == KJPlayerStatePlayFinished) {
-        NSURL *video = [NSURL URLWithString:@"http://appit.winpow.com/attached/media/MP4/1567585643618.mp4"];
-        player.kVideoTryLookTime(nil, 0);
-        if ([player.videoURL.absoluteString isEqualToString:video.absoluteString]) {
-            player.videoURL = [NSURL URLWithString:@"https://mp4.vjshi.com/2020-07-02/c411973c6c8628e94c40cb4e2689e56b.mp4"];
-            player.kVideoAdvanceAndReverse(50, ^(bool finished) {
-                
-            });
-        }else{
-            player.useCacheFunction = NO;
-            player.videoURL = video;
+        if (self.index++ >= self.temps.count) {
+            self.index = 0;
+        }
+        NSURL *video = [NSURL URLWithString:self.temps[self.index]];
+        if (self.index == 0) {
+            player.skipHeadTime = 100;
             player.timeSpace = 2.5;
+            player.speed = 1.25;
+            player.kVideoTryLookTime(nil, 0);
+            player.videoURL = video;
+        }else if (self.index == 1) {
+            player.skipHeadTime = 0;
+            player.timeSpace = 1.;
             player.speed = 1.;
-            player.cacheTime = 20;
+            player.kVideoCanCacheURL(video, YES);
             player.videoGravity = KJPlayerVideoGravityResizeAspect;
+        }else{
+            player.skipHeadTime = 50;
+            player.videoURL = video;
+            player.kVideoTryLookTime(^(BOOL end) {
+                if (end) {
+                    NSLog(@"试看时间已到");
+                }
+            }, 150);
         }
     }
 }
@@ -123,7 +131,7 @@
 }
 /* 缓存进度 */
 - (void)kj_player:(id<KJBasePlayer>)player loadProgress:(CGFloat)progress{
-//    NSLog(@"---缓存进度:%f",progress);
+    NSLog(@"---缓存进度:%f",progress);
     [self.progressView setProgress:progress animated:YES];
 }
 

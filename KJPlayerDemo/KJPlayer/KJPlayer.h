@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong,readonly) AVPlayerLayer *playerLayer;
 @property (nonatomic,strong,readonly) AVPlayerItem *playerItem;
 @property (nonatomic,strong,readonly) AVPlayer *player;
-@property (nonatomic,strong,readonly) AVURLAsset *asset;
 
 @end
 

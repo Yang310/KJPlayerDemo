@@ -16,7 +16,6 @@
 		6846A03E22E6A3FA0086C16F /* KJLightView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6846A03D22E6A3FA0086C16F /* KJLightView.m */; };
 		684F00BC25D3BEB600CCC718 /* KJCommonPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 684F00BB25D3BEB600CCC718 /* KJCommonPlayer.m */; };
 		68643A5B22E6F63A0065F787 /* KJPlayerViewConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 68643A5A22E6F63A0065F787 /* KJPlayerViewConfiguration.m */; };
-		686EEB9123C3357300F7DC2C /* UIButton+KJPlayerAreaInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 686EEB9023C3357300F7DC2C /* UIButton+KJPlayerAreaInsets.m */; };
 		687AA4CB2326357900C8EFF7 /* KJDefinitionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AA4CA2326357900C8EFF7 /* KJDefinitionView.m */; };
 		687DF93525BD7A4000222AFD /* KJPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 687DF93425BD7A4000222AFD /* KJPlayer.m */; };
 		6887897C22E7E6C30087597D /* KJPlayerViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6887897B22E7E6C30087597D /* KJPlayerViewModel.m */; };
@@ -45,6 +44,7 @@
 		68D143C425C6917900800F9F /* KJOldPlayerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D143C325C6917900800F9F /* KJOldPlayerVC.m */; };
 		68D143CD25C697B000800F9F /* KJAVPlayerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D143CC25C697B000800F9F /* KJAVPlayerVC.m */; };
 		68E902F925CFFEB9003FB88D /* DBPlayer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E902F725CFFEB9003FB88D /* DBPlayer.xcdatamodeld */; };
+		68F451EB25D526C500F719F9 /* KJPlayer+KJCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F451EA25D526C500F719F9 /* KJPlayer+KJCache.m */; };
 		68F47AA025D0196200A53101 /* DBPlayerDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F47A9F25D0196200A53101 /* DBPlayerDataInfo.m */; };
 		B500094B2C6B8DF274A1D74C /* Pods_KJPlayerDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FEF462326AB2D48A4290908 /* Pods_KJPlayerDemo.framework */; };
 /* End PBXBuildFile section */
@@ -81,8 +81,6 @@
 		684F00BB25D3BEB600CCC718 /* KJCommonPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJCommonPlayer.m; sourceTree = "<group>"; };
 		68643A5922E6F63A0065F787 /* KJPlayerViewConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KJPlayerViewConfiguration.h; sourceTree = "<group>"; };
 		68643A5A22E6F63A0065F787 /* KJPlayerViewConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJPlayerViewConfiguration.m; sourceTree = "<group>"; };
-		686EEB8F23C3357300F7DC2C /* UIButton+KJPlayerAreaInsets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+KJPlayerAreaInsets.h"; sourceTree = "<group>"; };
-		686EEB9023C3357300F7DC2C /* UIButton+KJPlayerAreaInsets.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+KJPlayerAreaInsets.m"; sourceTree = "<group>"; };
 		687AA4C92326357900C8EFF7 /* KJDefinitionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KJDefinitionView.h; sourceTree = "<group>"; };
 		687AA4CA2326357900C8EFF7 /* KJDefinitionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJDefinitionView.m; sourceTree = "<group>"; };
 		687DF93325BD7A4000222AFD /* KJPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KJPlayer.h; sourceTree = "<group>"; };
@@ -132,6 +130,8 @@
 		68D143CC25C697B000800F9F /* KJAVPlayerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJAVPlayerVC.m; sourceTree = "<group>"; };
 		68E902F825CFFEB9003FB88D /* DBPlayer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DBPlayer.xcdatamodel; sourceTree = "<group>"; };
 		68EC0D762360025D00867AAB /* KJPlayerHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJPlayerHeader.h; sourceTree = "<group>"; };
+		68F451E925D526C500F719F9 /* KJPlayer+KJCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KJPlayer+KJCache.h"; sourceTree = "<group>"; };
+		68F451EA25D526C500F719F9 /* KJPlayer+KJCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "KJPlayer+KJCache.m"; sourceTree = "<group>"; };
 		68F47A9E25D0196200A53101 /* DBPlayerDataInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBPlayerDataInfo.h; sourceTree = "<group>"; };
 		68F47A9F25D0196200A53101 /* DBPlayerDataInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBPlayerDataInfo.m; sourceTree = "<group>"; };
 		74836F060C378E015B277023 /* Pods-KJPlayerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KJPlayerDemo.release.xcconfig"; path = "Target Support Files/Pods-KJPlayerDemo/Pods-KJPlayerDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -196,8 +196,6 @@
 				6842658325A989420038FFCF /* KJPlayerType.h */,
 				689D5AAE22E3149400DE33FC /* KJRequestTask.h */,
 				689D5AAF22E3149400DE33FC /* KJRequestTask.m */,
-				686EEB8F23C3357300F7DC2C /* UIButton+KJPlayerAreaInsets.h */,
-				686EEB9023C3357300F7DC2C /* UIButton+KJPlayerAreaInsets.m */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -296,6 +294,8 @@
 			children = (
 				687DF93325BD7A4000222AFD /* KJPlayer.h */,
 				687DF93425BD7A4000222AFD /* KJPlayer.m */,
+				68F451E925D526C500F719F9 /* KJPlayer+KJCache.h */,
+				68F451EA25D526C500F719F9 /* KJPlayer+KJCache.m */,
 				689D5AB222E3525200DE33FC /* KJResourceLoader.h */,
 				689D5AB322E3525200DE33FC /* KJResourceLoader.m */,
 			);
@@ -581,7 +581,7 @@
 				6846A03E22E6A3FA0086C16F /* KJLightView.m in Sources */,
 				68B2554D25C990B8008515F4 /* KJMidiPlayer.m in Sources */,
 				689D5AB422E3525200DE33FC /* KJResourceLoader.m in Sources */,
-				686EEB9123C3357300F7DC2C /* UIButton+KJPlayerAreaInsets.m in Sources */,
+				68F451EB25D526C500F719F9 /* KJPlayer+KJCache.m in Sources */,
 				68643A5B22E6F63A0065F787 /* KJPlayerViewConfiguration.m in Sources */,
 				68D143C425C6917900800F9F /* KJOldPlayerVC.m in Sources */,
 				689D5A7822E3011200DE33FC /* AppDelegate.m in Sources */,

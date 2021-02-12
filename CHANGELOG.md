@@ -7,6 +7,9 @@
 ### 版本更新日志
 ```
 ####版本更新日志:
+#### Add 1.0.11
+1.分离缓存播放 KJPlayer+KJCache
+
 #### Add 1.0.10
 1.新增midi内核 KJMidiPlayer
 2.完善KJPlayer

@@ -14,6 +14,8 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <AVFoundation/AVFoundation.h>
 #import "DBPlayerDataInfo.h"
+#import <objc/runtime.h>
+#import <objc/message.h>
 
 NS_ASSUME_NONNULL_BEGIN
 // 弱引用
@@ -26,7 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 // 公共ivar
 #define PLAYER_COMMON_PROPERTY \
 @synthesize delegate = _delegate;\
-@synthesize useCacheFunction = _useCacheFunction;\
 @synthesize roregroundResume = _roregroundResume;\
 @synthesize backgroundPause = _backgroundPause;\
 @synthesize playerView = _playerView;\
@@ -35,13 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize volume = _volume;\
 @synthesize muted = _muted;\
 @synthesize cacheTime = _cacheTime;\
-@synthesize seekTime = _seekTime;\
+@synthesize skipHeadTime = _skipHeadTime;\
 @synthesize currentTime = _currentTime;\
-@synthesize errorCode = _errorCode;\
-@synthesize localityData = _localityData;\
+@synthesize ecode = _ecode;\
 @synthesize background = _background;\
 @synthesize timeSpace = _timeSpace;\
-@synthesize kPlayerTimeImage = _kPlayerTimeImage;\
 @synthesize placeholder = _placeholder;\
 @synthesize videoGravity = _videoGravity;\
 @synthesize requestHeader = _requestHeader;\
@@ -49,10 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize userPause = _userPause;\
 @synthesize isPlaying = _isPlaying;\
 @synthesize kVideoSize = _kVideoSize;\
+@synthesize kVideoTimeImage = _kVideoTimeImage;\
 @synthesize kVideoTotalTime = _kVideoTotalTime;\
 @synthesize kVideoURLFromat = _kVideoURLFromat;\
 @synthesize kVideoTryLookTime = _kVideoTryLookTime;\
 @synthesize kVideoAdvanceAndReverse = _kVideoAdvanceAndReverse;\
+@synthesize kVideoCanCacheURL = _kVideoCanCacheURL;\
 
 /// 播放器的几种状态
 typedef NS_ENUM(NSInteger, KJPlayerState) {
@@ -147,13 +148,13 @@ static NSString * const _Nonnull KJPlayerVideoFromatMimeStringMap[] = {
     [KJPlayerVideoFromat_m3u8] = @"video/m3u8",
 };
 NS_INLINE KJPlayerVideoFromat kPlayerVideoURLFromat(NSString * fromat){
-    if ([fromat isEqualToString:@"mp4"] || [fromat isEqualToString:@"MP4"]) {
+    if ([fromat containsString:@"mp4"] || [fromat containsString:@"MP4"]) {
         return KJPlayerVideoFromat_mp4;
-    }else if ([fromat isEqualToString:@"wav"] || [fromat isEqualToString:@"WAV"]) {
+    }else if ([fromat containsString:@"wav"] || [fromat containsString:@"WAV"]) {
         return KJPlayerVideoFromat_wav;
-    }else if ([fromat isEqualToString:@"avi"] || [fromat isEqualToString:@"AVI"]) {
+    }else if ([fromat containsString:@"avi"] || [fromat containsString:@"AVI"]) {
         return KJPlayerVideoFromat_avi;
-    }else if ([fromat isEqualToString:@"m3u8"]) {
+    }else if ([fromat containsString:@"m3u8"]) {
         return KJPlayerVideoFromat_m3u8;
     }else{
         return KJPlayerVideoFromat_none;
@@ -162,7 +163,10 @@ NS_INLINE KJPlayerVideoFromat kPlayerVideoURLFromat(NSString * fromat){
 // 根据链接获取格式
 NS_INLINE KJPlayerVideoFromat kPlayerFromat(NSURL *url){
     if (url == nil) return KJPlayerVideoFromat_none;
-    NSArray *array = [url.path componentsSeparatedByString:@"."];
+    if (url.pathExtension.length) {
+        return kPlayerVideoURLFromat(url.pathExtension);
+    }
+    NSArray * array = [url.path componentsSeparatedByString:@"."];
     if (array.count == 0) {
         return KJPlayerVideoFromat_none;
     }else{
@@ -182,24 +186,13 @@ NS_INLINE NSString * kPlayerMD5(NSString *string){
 }
 // 文件名
 NS_INLINE NSString * kPlayerIntactName(NSURL *url){
-    return kPlayerMD5(url.resourceSpecifier?:url.absoluteString);
+    NSString *name = kPlayerMD5(url.resourceSpecifier?:url.absoluteString);
+    return [@"video_" stringByAppendingString:name];
 }
 // 得到完整的沙盒路径
 NS_INLINE NSString * kPlayerIntactSandboxPath(NSString *videoName){
     NSString *document = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES).lastObject;
     return [document stringByAppendingPathComponent:videoName];
-}
-// 获取当前的旋转状态
-NS_INLINE CGAffineTransform kPlayerDeviceOrientation(void){
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if (orientation == UIInterfaceOrientationPortrait) {
-        return CGAffineTransformIdentity;
-    }else if (orientation == UIInterfaceOrientationLandscapeLeft) {
-        return CGAffineTransformMakeRotation(-M_PI_2);
-    }else if (orientation == UIInterfaceOrientationLandscapeRight) {
-        return CGAffineTransformMakeRotation(M_PI_2);
-    }
-    return CGAffineTransformIdentity;
 }
 // 设置时间显示
 NS_INLINE NSString * kPlayerConvertTime(CGFloat second){
